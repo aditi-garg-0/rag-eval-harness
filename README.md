@@ -1,4 +1,3 @@
-```markdown
 # RAG Evaluation Harness
 
 A retrieval-augmented generation system built around a central question:
@@ -291,4 +290,3 @@ Still open:
 - [ ] Cost/latency tradeoff *curves* (plotting, not just the raw per-row numbers -- pandas/matplotlib are already optional deps for this)
 - [ ] A real human-annotated judge-calibration set of non-trivial size (the bundled 8-example file is a format demo)
 - [ ] Wire a paid API generator in behind `BaseGenerator` so `cost_per_1k_tokens` has a non-hypothetical use case
-```
