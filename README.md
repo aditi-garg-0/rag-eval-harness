@@ -1,3 +1,4 @@
+```markdown
 # RAG Evaluation Harness
 
 A retrieval-augmented generation system built around a central question:
@@ -6,11 +7,19 @@ A retrieval-augmented generation system built around a central question:
 Most RAG repos stop at "it retrieves, it generates, it works on my demo
 query." This one is built the other way around: the pipeline exists so it
 can be systematically ablated. Chunking strategy, chunk size, retriever
-type (sparse/dense/hybrid), and top-k are all pluggable and swept as
-independent axes, with retrieval and generation quality measured
-*separately* — because a RAG system can have great retrieval and still
-hallucinate, or bad retrieval that the generator quietly refuses around,
-and averaging those together hides which stage is the actual bottleneck.
+type (sparse/dense/hybrid), query rewriting (HyDE, multi-query fusion,
+multi-hop decomposition), reranking (cross-encoder or a lexical
+fallback), and top-k are all pluggable and swept as independent axes,
+with retrieval and generation quality measured *separately* — because a
+RAG system can have great retrieval and still hallucinate, or bad
+retrieval that the generator quietly refuses around, and averaging those
+together hides which stage is the actual bottleneck.
+
+It also tries not to let its own eval tooling get away with sloppiness:
+config comparisons come with bootstrap confidence intervals and paired
+significance tests rather than bare means, and the LLM-judge scores come
+with a calibration module for measuring judge/human agreement instead of
+just trusting them.
 
 Runs fully offline/local by default (BM25 + a deterministic mock
 generator for pipeline testing), with pluggable dense retrieval and local
@@ -282,3 +291,4 @@ Still open:
 - [ ] Cost/latency tradeoff *curves* (plotting, not just the raw per-row numbers -- pandas/matplotlib are already optional deps for this)
 - [ ] A real human-annotated judge-calibration set of non-trivial size (the bundled 8-example file is a format demo)
 - [ ] Wire a paid API generator in behind `BaseGenerator` so `cost_per_1k_tokens` has a non-hypothetical use case
+```
