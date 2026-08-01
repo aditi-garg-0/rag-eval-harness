@@ -1,0 +1,50 @@
+[
+  {
+    "query_id": "q1",
+    "metric": "faithfulness",
+    "human_score": 5,
+    "notes": "Reference example only -- replace with real human ratings of your judge's actual outputs before trusting this file for anything."
+  },
+  {
+    "query_id": "q2",
+    "metric": "faithfulness",
+    "human_score": 4,
+    "notes": "Reference example only."
+  },
+  {
+    "query_id": "q3",
+    "metric": "faithfulness",
+    "human_score": 4,
+    "notes": "Reference example only."
+  },
+  {
+    "query_id": "q4",
+    "metric": "faithfulness",
+    "human_score": 3,
+    "notes": "Reference example only -- this query is deliberately conceptually tricky (see sample_eval_set.json notes)."
+  },
+  {
+    "query_id": "q8",
+    "metric": "faithfulness",
+    "human_score": 5,
+    "notes": "Reference example only -- adversarial no-answer query; a correct refusal should score high faithfulness."
+  },
+  {
+    "query_id": "q1",
+    "metric": "relevance",
+    "human_score": 5,
+    "notes": "Reference example only."
+  },
+  {
+    "query_id": "q5",
+    "metric": "relevance",
+    "human_score": 5,
+    "notes": "Reference example only."
+  },
+  {
+    "query_id": "q7",
+    "metric": "relevance",
+    "human_score": 4,
+    "notes": "Reference example only."
+  }
+]

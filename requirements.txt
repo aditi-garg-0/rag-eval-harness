@@ -1,0 +1,22 @@
+# Core (always required, fully offline-capable: chunking, BM25 retrieval,
+# eval metrics, MockGenerator, ablation runner)
+rank_bm25>=0.2.2
+numpy>=1.24
+pytest>=7.0
+
+# Optional: dense/hybrid retrieval AND cross-encoder reranking (both come
+# from the same package; downloads a model from HuggingFace on first use --
+# needs internet access, not required for BM25-only / rerankers=none runs)
+# sentence-transformers>=2.7
+
+# Optional: local generation via HuggingFace transformers directly
+# (alternative to Ollama; needs internet + a model download + torch)
+# transformers>=4.40
+# torch>=2.2
+
+# Optional: analysis / plotting of ablation results
+# pandas>=2.0
+# matplotlib>=3.8
+
+# Note: OllamaGenerator has no Python dependency -- it just needs a local
+# Ollama server running (https://ollama.com). See README for setup.

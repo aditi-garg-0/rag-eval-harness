@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+env/
+*.egg-info/
+
+# Local artifacts / model caches
+.ollama/
+*.log
+
+# Large generated data (keep sample_corpus, ignore fetched full corpora)
+data/corpus.json
+
+# Experiment outputs (keep the directory, ignore generated CSVs)
+experiments/results/*.csv
+!experiments/results/.gitkeep
+
+.DS_Store

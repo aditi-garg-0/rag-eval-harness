@@ -1,0 +1,58 @@
+[
+  {
+    "query_id": "q1",
+    "question": "What is BM25 and why doesn't it need training?",
+    "relevant_doc_ids": ["doc_bm25"],
+    "reference_answer": "BM25 is a bag-of-words lexical ranking function that scores documents based on term overlap with a query, using term-frequency saturation and length normalization; it requires no training because it is a statistical formula, not a learned model.",
+    "notes": "Single clearly-relevant document, direct definitional question."
+  },
+  {
+    "query_id": "q2",
+    "question": "Why might someone combine BM25 with dense embeddings instead of using just one?",
+    "relevant_doc_ids": ["doc_bm25", "doc_dense", "doc_hybrid"],
+    "reference_answer": "Because BM25 and dense retrieval make different kinds of errors: BM25 is precise on exact terms but misses paraphrase, while dense retrieval captures semantic similarity but can drift on rare terms; combining them (hybrid retrieval) tends to outperform either alone.",
+    "notes": "Multi-hop: answer is spread across three related documents."
+  },
+  {
+    "query_id": "q3",
+    "question": "How does chunk size affect retrieval precision versus generation quality?",
+    "relevant_doc_ids": ["doc_chunking"],
+    "reference_answer": "Smaller chunks tend to improve retrieval precision since each chunk is more topically focused, but can hurt generation quality if the chunk lacks enough surrounding context.",
+    "notes": "Tests whether chunking strategy affects whether the relevant chunk is retrieved at all."
+  },
+  {
+    "query_id": "q4",
+    "question": "What's the difference between a hallucinated answer and an incorrect answer?",
+    "relevant_doc_ids": ["doc_hallucination"],
+    "reference_answer": "A hallucinated answer is unfaithful to the provided context, meaning its claims aren't derivable from the source material, regardless of whether they happen to be true; an incorrect answer is simply factually wrong. An answer can be correct but still unfaithful/hallucinated.",
+    "notes": "Tests faithfulness metric intuition -- adversarial for lexical-overlap faithfulness proxy since it requires distinguishing a conceptual nuance."
+  },
+  {
+    "query_id": "q5",
+    "question": "Why is it important to evaluate retrieval and generation separately in a RAG system?",
+    "relevant_doc_ids": ["doc_rag_eval"],
+    "reference_answer": "Because the two stages fail independently -- a strong generation score can mask weak retrieval and vice versa -- so combining them into one metric hides which stage is actually the bottleneck.",
+    "notes": "This is the core thesis of the whole project; good for the findings write-up."
+  },
+  {
+    "query_id": "q6",
+    "question": "What does a cross-encoder reranker do differently from a bi-encoder retriever?",
+    "relevant_doc_ids": ["doc_reranking", "doc_dense"],
+    "reference_answer": "A cross-encoder jointly processes the query and passage together, modeling fine-grained interactions, unlike a bi-encoder which encodes them independently; this improves precision but is much slower, so rerankers are only applied to a small candidate set from a first-stage retriever.",
+    "notes": "Tests whether retriever surfaces the conceptually-related dense retrieval doc too."
+  },
+  {
+    "query_id": "q7",
+    "question": "Does giving a model more retrieved chunks always improve its answers?",
+    "relevant_doc_ids": ["doc_context_window"],
+    "reference_answer": "No -- the lost-in-the-middle effect means information in the middle of a long context is used less reliably, so adding more chunks can dilute attention on the most relevant one and even hurt answer quality.",
+    "notes": "Tests a counter-intuitive finding; good for surfacing whether generator actually engages with nuance or gives a generic 'more context is better' answer."
+  },
+  {
+    "query_id": "q8",
+    "question": "What is the boiling point of tungsten?",
+    "relevant_doc_ids": [],
+    "reference_answer": null,
+    "notes": "Adversarial: no relevant document exists in the corpus. Correct behavior is refusal, not a hallucinated answer from parametric memory. Use this to measure refusal_rate and false-positive faithfulness."
+  }
+]

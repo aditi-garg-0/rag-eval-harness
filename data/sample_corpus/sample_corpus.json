@@ -1,0 +1,50 @@
+[
+  {
+    "doc_id": "doc_bm25",
+    "title": "Lexical Retrieval with BM25",
+    "text": "BM25 is a bag-of-words ranking function used to estimate the relevance of documents to a search query. It builds on the TF-IDF family of scoring functions by adding term-frequency saturation and document-length normalization. Unlike raw term frequency, BM25 diminishes the returns of repeated terms, so a document that mentions a keyword fifty times is not scored proportionally higher than one that mentions it five times. Because it relies purely on token overlap, BM25 requires no training and no GPU, which makes it a fast, dependency-light baseline for retrieval systems. It struggles, however, with vocabulary mismatch: a query about a car will not match a passage that only uses the word automobile.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_dense",
+    "title": "Dense Passage Retrieval",
+    "text": "Dense retrieval encodes both queries and passages into fixed-size vectors using a neural encoder, typically a bi-encoder transformer trained so that relevant query-passage pairs land close together in embedding space under cosine similarity or dot product. This approach captures semantic similarity beyond exact keyword overlap, so a query about automobiles can retrieve a passage about cars. Dense retrieval usually requires an approximate nearest neighbor index such as FAISS or HNSW to scale beyond small corpora, and its quality depends heavily on how well the embedding model's training distribution matches the target domain; embedding models trained on general web text can underperform on specialized technical or legal corpora without fine-tuning.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_hybrid",
+    "title": "Hybrid Retrieval and Reciprocal Rank Fusion",
+    "text": "Hybrid retrieval systems combine sparse lexical scores such as BM25 with dense embedding similarity scores, on the theory that the two methods make different kinds of errors: lexical retrieval is precise on exact terms like product codes or named entities but blind to paraphrase, while dense retrieval captures semantic similarity but can drift on rare or highly specific terms. A common fusion technique is reciprocal rank fusion, which combines rankings rather than raw scores, avoiding the need to calibrate two different scoring scales. In practice, hybrid retrieval tends to outperform either method alone on heterogeneous query sets, at the cost of maintaining two indexes.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_chunking",
+    "title": "Chunking Strategies for Retrieval-Augmented Generation",
+    "text": "How a document is split into retrievable chunks has an outsized effect on RAG system quality. Fixed-size chunking splits text every N characters or tokens, which is simple but can sever a sentence or an argument in half, leaving retrieved chunks that are locally incoherent. Recursive chunking instead tries a hierarchy of separators, paragraph breaks first, then sentence breaks, then words, only falling back to a harder split when a piece is still too large, which tends to preserve more semantic units. Semantic chunking goes further, grouping sentences by topical similarity so that a chunk boundary corresponds to an actual shift in subject matter rather than an arbitrary character count. Smaller chunks improve retrieval precision because each chunk is more topically focused, but they can hurt generation quality if the chunk lacks enough surrounding context for the model to answer confidently.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_hallucination",
+    "title": "Hallucination and Faithfulness in Generated Answers",
+    "text": "A generated answer is considered unfaithful, or hallucinated, when it contains claims that are not supported by the source material it was conditioned on, even if those claims happen to be true in the real world. Faithfulness is distinct from correctness: an answer can be factually correct but unfaithful if it was not actually derivable from the retrieved context, meaning the system got lucky rather than grounded. Retrieval-augmented generation is often framed as a mitigation for hallucination, since the model is meant to condition on retrieved evidence rather than only its parametric memory, but providing context does not guarantee the model will use it faithfully; models can still ignore the context and answer from memory, especially when the retrieved context is irrelevant or contradicts the model's prior beliefs.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_rag_eval",
+    "title": "Evaluating Retrieval-Augmented Generation Systems",
+    "text": "Evaluating a RAG system requires separating retrieval quality from generation quality, because the two stages fail in different ways and a strong score on one can mask a weak score on the other. Retrieval evaluation typically uses metrics like precision at k, recall at k, and mean reciprocal rank against a labeled set of queries with known relevant documents. Generation evaluation is harder to automate because it concerns semantic properties like faithfulness and relevance rather than exact match; a common approach is LLM-as-judge, where a separate language model scores an answer's groundedness against the retrieved context, though such judges have their own biases and can be miscalibrated, especially smaller open-weight models used as judges, which motivates spot-checking judge scores against human annotation.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_reranking",
+    "title": "Rerankers in Retrieval Pipelines",
+    "text": "A reranker is a second-stage model applied after an initial retriever returns a candidate set, typically a cross-encoder that jointly processes the query and each candidate passage rather than encoding them independently as a bi-encoder does. This joint processing allows the reranker to model fine-grained interactions between query and passage terms, generally improving precision at the cost of significantly higher latency, since it must run a forward pass per candidate rather than a single similarity lookup. Rerankers are usually applied only to the top handful of candidates from a cheaper first-stage retriever, such as the top 20 to 50 results from BM25 or dense retrieval, as a way to get cross-encoder quality without cross-encoder cost across the entire corpus.",
+    "metadata": {}
+  },
+  {
+    "doc_id": "doc_context_window",
+    "title": "Context Window Effects on In-Context Retrieval Use",
+    "text": "Even when relevant information is successfully retrieved and placed in a language model's context window, the model does not necessarily use it uniformly. Empirical studies of long-context models have found a position bias sometimes described as a lost-in-the-middle effect, where information placed at the very start or very end of the context is used more reliably than information placed in the middle, regardless of the total context length. This has practical implications for RAG system design: simply increasing the number of retrieved chunks fed to the model does not monotonically improve answer quality, and can even hurt it, since additional chunks dilute the effective attention paid to the most relevant one and increase the chance the answer-bearing chunk lands in a weakly-attended middle position.",
+    "metadata": {}
+  }
+]
